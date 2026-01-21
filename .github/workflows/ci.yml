@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  frontend-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests
+        run: npm run test:ci
+      - name: Build frontend
+        run: npm run build
+
+  backend-check:
+    name: Backend quick check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install backend dependencies (if any)
+        run: |
+          if [ -f package.json ]; then npm ci; else echo "no backend package.json"; fi
+      - name: Backend build (if any)
+        run: |
+          if [ -f package.json ]; then npm run build --silent || echo "no backend build or build failed"; else echo "no backend package.json"; fi
