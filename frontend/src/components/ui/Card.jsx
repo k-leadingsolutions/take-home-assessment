@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import PropTypes from 'prop-types';
 
 export const Card = ({ title, children, className = '' }) => (
   <motion.div
@@ -31,18 +30,5 @@ export const Stat = ({ label, value, delta, positive = true }) => (
     </div>
   </div>
 );
-
-Card.propTypes = {
-  title: PropTypes.node,
-  children: PropTypes.node,
-  className: PropTypes.string,
-};
-
-Stat.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.node,
-  delta: PropTypes.number,
-  positive: PropTypes.bool,
-};
 
 export default Card;
